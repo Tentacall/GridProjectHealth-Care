@@ -31,6 +31,7 @@ class Kernel:
         return circuit, keys
 
     def kernel2(self, P):
+        # 2x2 kernel for image compresion with restoration
         Q = [cirq.GridQubit(i,0) for i in range(4)]
         W = [cirq.GridQubit(i,1) for i in range(3)]
         keys = ["q0", "q1", "q2", "q3"]
