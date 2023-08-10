@@ -1,0 +1,27 @@
+image_preprocessing:
+  image_size : 224
+  itype : '.jpg' # image type
+
+train_dataset:
+
+  columns: ['Image name', 'Retinopathy grade']
+  image_path: 'dataset/train/'
+  label_path: 'dataset/train.csv'
+  do_random_crop : True
+  shuffle: True
+  batch_size: 16
+
+test_dataset:
+
+  columns: ['Image name', 'Retinopathy grade']
+  image_path: 'dataset/test/'
+  label_path: 'dataset/test.csv'
+  do_random_crop : False
+  shuffle: False
+  batch_size: 16
+
+model:
+  name: 'efficientnet-b0'
+  pretrained: True
+  num_classes: 5
+  return_nodes: ['features.3.6.add']
