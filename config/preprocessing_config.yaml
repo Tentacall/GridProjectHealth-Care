@@ -5,8 +5,8 @@ image_preprocessing:
 train_dataset:
 
   columns: ['Image name', 'Retinopathy grade']
-  image_path: 'dataset/train/'
-  label_path: 'dataset/train.csv'
+  image_path: 'archive/B.%20Disease%20Grading/B. Disease Grading/1. Original Images/a. Training Set'
+  label_path: 'archive/B.%20Disease%20Grading/B. Disease Grading/2. Groundtruths/a. IDRiD_Disease Grading_Training Labels.csv'
   do_random_crop : True
   shuffle: True
   batch_size: 16
@@ -14,8 +14,8 @@ train_dataset:
 test_dataset:
 
   columns: ['Image name', 'Retinopathy grade']
-  image_path: 'dataset/test/'
-  label_path: 'dataset/test.csv'
+  image_path: 'archive/B.%20Disease%20Grading/B. Disease Grading/1. Original Images/b. Testing Set'
+  label_path: 'archive/B.%20Disease%20Grading/B. Disease Grading/2. Groundtruths/b. IDRiD_Disease Grading_Testing Labels.csv'
   do_random_crop : False
   shuffle: False
   batch_size: 16
