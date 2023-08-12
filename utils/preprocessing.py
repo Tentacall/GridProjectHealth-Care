@@ -16,7 +16,8 @@ columns = conf['train_dataset']['columns']
 image_size = conf['image_preprocessing']['image_size']
 device = conf['metadata']['device']
 
-def prepare_image(path, sigmaX = 10, do_random_crop = False):
+# def prepare_image(path, sigmaX = 10, do_random_crop = False):
+def prepare_image(path, sigmaX = 10, do_random_crop = False, image_size = 224):
     
     # import image
     image = cv2.imread(path)
@@ -97,20 +98,26 @@ def random_crop(img, size = (0.9, 1)):
 class EyeData(Dataset):
     
     # initialize
-    def __init__(self, data, directory, transform = None, do_random_crop = True, itype = '.jpg'):
+    def __init__(self, data, directory, columns, transform = None, do_random_crop = True, itype = '.jpg', image_size = 224, device = 'cpu'):
         self.data      = data
         self.directory = directory
+        self.columns   = columns
         self.transform = transform
         self.do_random_crop = do_random_crop
         self.itype = itype
+        self.image_size = image_size
+        self.device = device
     # length
     def __len__(self):
         return len(self.data)
     
     # get items    
     def __getitem__(self, idx):
-        img_name = os.path.join(self.directory, self.data.loc[idx, columns[0]] + self.itype)
-        image    = prepare_image(img_name, do_random_crop = self.do_random_crop)
+        img_name = os.path.join(self.directory, self.data.loc[idx, self.columns[0]] + self.itype)
+        image    = prepare_image(img_name, do_random_crop = self.do_random_crop, image_size = self.image_size)
         image    = self.transform(image)
-        label    = torch.tensor(self.data.loc[idx, columns[1]])
+        label    = torch.tensor(self.data.loc[idx, self.columns[1]])
+        # if(device == 'cuda:0'):
+        #     image = image.to(device)
+        #     label = label.to(device)
         return {'image': image, 'label': label}

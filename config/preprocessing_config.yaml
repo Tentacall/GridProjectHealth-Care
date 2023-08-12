@@ -6,9 +6,12 @@ metadata:
 image_preprocessing:
   image_size : 224
   itype : '.jpg' # image type
+  batch_size : 16
+  shuffle : True
+  do_random_crop : True
+  columns : ['Image name', 'Retinopathy grade']
 
 train_dataset:
-
   columns: ['Image name', 'Retinopathy grade']
   image_path: 'archive/B.%20Disease%20Grading/B. Disease Grading/1. Original Images/a. Training Set'
   label_path: 'archive/B.%20Disease%20Grading/B. Disease Grading/2. Groundtruths/a. IDRiD_Disease Grading_Training Labels.csv'
@@ -17,7 +20,6 @@ train_dataset:
   batch_size: 16
 
 test_dataset:
-
   columns: ['Image name', 'Retinopathy grade']
   image_path: 'archive/B.%20Disease%20Grading/B. Disease Grading/1. Original Images/b. Testing Set'
   label_path: 'archive/B.%20Disease%20Grading/B. Disease Grading/2. Groundtruths/b. IDRiD_Disease Grading_Testing Labels.csv'
