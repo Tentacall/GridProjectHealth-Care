@@ -107,7 +107,7 @@ class load_data:
                             do_random_crop = False)
 
         test_loader = torch.utils.data.DataLoader(dataset     = test_dataset, 
-                                                    batch_size  = self.batch_size, 
+                                                    batch_size  = int(self.batch_size/4), 
                                                     shuffle     = False, 
                                                     num_workers = 4)
         
@@ -119,7 +119,7 @@ class load_data:
                             do_random_crop = False)
 
         valid_loader = torch.utils.data.DataLoader(dataset     = valid_dataset, 
-                                                    batch_size  = self.batch_size, 
+                                                    batch_size  = int(self.batch_size/4), 
                                                     shuffle     = False, 
                                                     num_workers = 4)
         
