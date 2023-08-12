@@ -80,10 +80,10 @@ class load_data:
         
     def import_data(self):
         train_df = pd.read_csv(self.train_labels_path)
-        test_df = pd.read_csv(self.test_labels_path)
-        n = int(len(test_df)/2)
-        test_df = test_df.iloc[:n, 0:2]
-        valid_df = test_df.iloc[n:, 0:2]
+        temp_test_df = pd.read_csv(self.test_labels_path)
+        n = int(len(temp_test_df)/2)
+        test_df = temp_test_df.iloc[:n, 0:2]
+        valid_df = temp_test_df.iloc[n:, 0:2]
         return train_df, test_df, valid_df
         
     def create_loader(self):
