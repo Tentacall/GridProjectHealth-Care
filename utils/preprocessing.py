@@ -14,6 +14,7 @@ conf = yaml.safe_load(open(config_path,'r'))
 
 columns = conf['train_dataset']['columns']
 image_size = conf['image_preprocessing']['image_size']
+device = conf['metadata']['device']
 
 def prepare_image(path, sigmaX = 10, do_random_crop = False):
     
@@ -36,6 +37,7 @@ def prepare_image(path, sigmaX = 10, do_random_crop = False):
     # convert to tensor    
     image = torch.tensor(image)
     image = image.permute(2, 1, 0)
+    
     return image
 
 def crop_black(img, tol = 7):

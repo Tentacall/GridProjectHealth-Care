@@ -1,3 +1,8 @@
+metadata:
+  device : 'cuda:0'
+  saved_model_path : 'archive/model'
+  tensor_path : 'archive/B.%20Disease%20Grading/B. Disease Grading/3. Tensor Images'
+
 image_preprocessing:
   image_size : 224
   itype : '.jpg' # image type
