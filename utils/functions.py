@@ -1,27 +1,14 @@
-def accuracy_util(y_pred, y_true):
-    difference = abs(y_pred - y_true)
+import torch
 
-    if difference == 0:
-        accuracy_score = 4
-    elif difference == 1:
-        accuracy_score = 3
-    elif difference == 2:
-        accuracy_score = 2
-    elif difference == 3:
-        accuracy_score = 1
-    else:
-        accuracy_score = 0
-        
-    accuracy_score = accuracy_score/4
+def ordinal_accuracy(y_pred, y_true, tolerance=1):
+    correct_predictions = torch.abs(torch.argmax(y_pred, dim=1) - y_true) <= tolerance
+    accuracy = correct_predictions.sum().item() / len(y_true)
+    return accuracy
 
-    return accuracy_score
-
-def batch_accuracy(y_pred_batch, y_true_batch):
-    
-    correct = 0
-    
-    for i in range(len(y_pred_batch)):
-        correct = correct + accuracy_util(y_pred_batch[i], y_true_batch[i])
-        correct = correct/len(y_pred_batch)
-        
-    return correct
+def ordinal_loss(self, y_pred, y_true, num_classes=5):
+    loss = 0
+    for i in range(num_classes - 1):
+        loss += torch.log(torch.exp(y_pred[:, i]) + 1e-10).sum() - y_pred[:, i + 1].sum()
+        loss *= (y_true > i).float()
+    loss += torch.log(torch.exp(y_pred[:, num_classes - 1]) + 1e-10).sum()
+    return -loss.mean()
