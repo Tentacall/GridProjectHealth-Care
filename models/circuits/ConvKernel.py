@@ -12,10 +12,10 @@ def kernel2(P, weight):
     #     circuit.append(cirq.H(Q[i]))
 
     for i in range(4):
-        circuit.append(cirq.ry(P[i]/255 * pi).on(Q[i]))
+        circuit.append(cirq.ry(P[i] * pi).on(Q[i]))
     
     for i in range(3):
-        circuit.append(cirq.rz(weight[i]/255 * pi).on(W[i]))
+        circuit.append(cirq.rx(weight[i] * pi).on(W[i]))
     
     for i in range(3):
         circuit.append(cirq.TOFFOLI(W[i], Q[i], Q[i+1]))
@@ -25,6 +25,23 @@ def kernel2(P, weight):
     
     for i in range(4):
         circuit.append(cirq.measure(Q[i], key=keys[i]))
+    return circuit, keys
+
+def kernel3(P, weight):
+    circuit = cirq.Circuit()
+    # bias addition kernel
+    Q = [cirq.GridQubit(i,0) for i in range(4)]
+    W = cirq.GridQubit(0,1)
+    keys = ["q"]
+    for i in range(4):
+        circuit.append(cirq.ry(P[i] * pi).on(Q[i]))
+    
+    for i in range(4):
+        circuit.append(cirq.rx(weight[i]*pi).on(W))
+        circuit.append(cirq.CNOT(W, Q[i]))
+
+    circuit.append(cirq.measure(Q[3], key=keys[i]))
+    
     return circuit, keys
 
 
@@ -47,5 +64,5 @@ def main(circuit, keys):
 
 if __name__ == '__main__':
     import qsimcirq
-    circuit, keys = kernel2([0,12,230,0], [12,23,4,5])
+    circuit, keys = kernel3([0.0, 0.0, 0.0, 0.0], [0.1, -0.111612, 0.20, 0.1])
     main(circuit, keys)

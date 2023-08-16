@@ -1,10 +1,13 @@
-from utils.dataloader import load_data
-from models.model_v1 import ClassicalModel
+from utils.dataloader  import load_data
 import time
 from utils.confLoader import *
 import torch.nn as nn
 import torch.optim as optim
 import torch
+# model imports
+from models.model_v1 import ClassicalModel
+from models.model_v1 import QuantamModel
+import torch.multiprocessing as mp
 
 class Trainner:
     def __init__(self, model, epoch = 1):
@@ -49,6 +52,7 @@ class Trainner:
                 output = self.model(inputs)
                 _, predicted = torch.max(output.data, 1)
                 total += labels.size(0)
+                print(predicted, labels)
                 correct += (predicted == labels).sum().item()
                 print(f"total: {total}, correct = {correct}")
         print(f'Accuracy of the network on the {total} test images: {100 * correct / total:.2f}%')
@@ -69,10 +73,13 @@ class Trainner:
 
 
 if __name__ == '__main__':
-    trainer = Trainner(ClassicalModel(), 1)
-    trainer.train()
-    trainer.save("model_classic_v1.1")
-    # trainer.loadModel("model_classic_v1")
+    mp.set_start_method('spawn')
+    trainer = Trainner(QuantamModel(), 1)
+    # trainer.train()
+    # trainer.save("model_quant_v1.0")
+    trainer.loadModel("model_quant_v1.0")
     trainer.test()
 
-#-------------------------------------------------
+#-------------------------------------------------#
+# ClassicalModel -> 31.37% [ 1 epoch ] | problem -> constant result
+# Hybreed Model -> 0% [ 1 epoch ] | -> constant result
