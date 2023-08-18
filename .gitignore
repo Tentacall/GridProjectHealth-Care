@@ -23,3 +23,6 @@ pip-log.txt
 
 # Numpy extentions
 *.npy
+
+# saved models
+*.pth

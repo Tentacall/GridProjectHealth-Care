@@ -1,1 +1,0 @@
-from circuits.ConvKernel import kernel2

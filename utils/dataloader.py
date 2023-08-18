@@ -56,9 +56,9 @@ class load_data:
         #GPU CHECK
         train_on_gpu = torch.cuda.is_available()
         if not train_on_gpu:
-            device = torch.device('cpu')
+            self.device = torch.device('cpu')
         else:
-            device = torch.device('cuda:0')
+            self.device = torch.device('cuda:0')
         
         # train transformations
         self.train_trans = transforms.Compose([transforms.ToPILImage(),
@@ -82,7 +82,7 @@ class load_data:
         train_df = pd.read_csv(self.train_labels_path)
         temp_test_df = pd.read_csv(self.test_labels_path)
         n = int(len(temp_test_df)/2)
-        test_df = temp_test_df.iloc[:n, 0:2]
+        test_df = temp_test_df.iloc[:, 0:2]
         valid_df = temp_test_df.iloc[n:, 0:2]
         return train_df, test_df, valid_df
         

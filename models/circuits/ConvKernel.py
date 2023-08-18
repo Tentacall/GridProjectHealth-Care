@@ -40,7 +40,7 @@ def kernel3(P, weight):
         circuit.append(cirq.rx(weight[i]*pi).on(W))
         circuit.append(cirq.CNOT(W, Q[i]))
 
-    circuit.append(cirq.measure(Q[3], key=keys[i]))
+    circuit.append(cirq.measure(Q[3], key=keys[0]))
     
     return circuit, keys
 
