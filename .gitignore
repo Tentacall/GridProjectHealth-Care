@@ -26,3 +26,6 @@ pip-log.txt
 
 # saved models
 *.pth
+
+# images
+images

@@ -1,6 +1,7 @@
 # imports
 import cirq
 from math import pi
+import qsimcirq
 
 def kernel2(P, weight):
     Q = [cirq.GridQubit(i,0) for i in range(4)]

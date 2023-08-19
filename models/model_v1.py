@@ -1,5 +1,5 @@
 import torch.nn as nn
-from .qcModel import Quanv2D
+from .Quanv2D import Quanv2D
 import torch
 import qsimcirq
 

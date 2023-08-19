@@ -1,6 +1,8 @@
 import torch.nn as nn
 from .circuits.ConvKernel import kernel2, kernel3
+from .circuits.ConvKernelV2 import kernel4
 import torch
+from .utils import loading_bar
 
 class Quanv2D(nn.Module):
     def __init__(
@@ -46,8 +48,9 @@ class Quanv2D(nn.Module):
 
     def forward(self, x):
         self.inputs = x
-        print(x.requires_grad)
+        # print(x.requires_grad)
         kernel_height, kernel_width = (2, 2)
+        # print(x.size())
         count, in_channels, image_height, image_width = x.size()
         expansion = self.in_channels * 4 == self.out_channels
         output_height = (image_height - kernel_height) // self.stride + 1
@@ -66,6 +69,7 @@ class Quanv2D(nn.Module):
                         result[c][ic * self.extension_factor + t][h][w] = (
                             res.histogram(key="q")[1] * 0.1
                         )
+                loading_bar(ic, in_channels)
         result.requires_grad = True
         return result
 

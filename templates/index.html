@@ -11,11 +11,13 @@
 <body>
     <div class="container">
         <h1> Diabetic Ratinopathy </h1>
+        <img id="uploaded-image" src="{{ url_for('static', filename='upload.png') }}" alt="Uploaded Image">
         <form id="upload-form" enctype="multipart/form-data">
             <input type="file" name="image" accept="image/*">
             <button type="submit">Detect</button>
         </form>
         <div id="result"></div>
+
     </div>
     <script src="{{ url_for('static', filename='script.js') }}"></script>
 </body>

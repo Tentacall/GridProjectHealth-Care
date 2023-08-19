@@ -1,3 +1,4 @@
+@import url('https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@10..48,500&display=swap');
 /* Reset some default browser styles */
 body, h1, h2, h3, p, ul, li {
     margin: 0;
@@ -5,26 +6,33 @@ body, h1, h2, h3, p, ul, li {
 }
 
 body {
-    font-family: Arial, sans-serif;
+    font-family: 'Bricolage Grotesque', sans-serif;
     background-color: #333;
     color: #fff;
     text-align: center;
+    height: 100vh;
     display: flex;
     flex-direction: column;
+    align-content: center;
+    justify-content: center;
+    align-items: center;
 }
 
 .container {
     max-width: 800px;
-    margin: auto;   
-    padding: 20px;
-    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.5);
+    margin: auto;
+    padding: 92px;
     background-color: #444;
+    display: flex;
+    flex-direction: column;
+    align-content: center;
+    justify-content: center;
 }
 
 h1 {
     font-size: 32px;
     margin-bottom: 20px;
-    color: #007bff;
+    color: #d2bc00
 }
 
 form {
@@ -41,7 +49,7 @@ input[type="file"] {
 }
 
 button[type="submit"] {
-    background-color: #007bff;
+    background-color: #d2bc00;
     color: #fff;
     border: none;
     padding: 10px 20px;
@@ -50,11 +58,16 @@ button[type="submit"] {
 }
 
 button[type="submit"]:hover {
-    background-color: #0056b3;
+    background-color: #ffee5a;
 }
 
 #result {
     padding: 20px;
     border: 1px solid #666;
     background-color: #555;
+}
+
+#uploaded-image {
+    max-height: 100px;
+    margin: 0 auto;
 }

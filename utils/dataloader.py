@@ -40,7 +40,7 @@ from utils.preprocessing import *
 class load_data:
     
     def __init__(self, train_labels_path, test_labels_path, train_image_path, test_image_path, columns, 
-              itype = '.jpg', batch_size = 16, shuffle=True, do_random_crop = False, device = 'cpu'):
+              itype = '.jpg', batch_size = 16, shuffle=True, do_random_crop = False, device = 'cpu', reduce=False):
         self.train_labels_path = train_labels_path
         self.test_labels_path = test_labels_path
         self.train_image_path = train_image_path
@@ -52,7 +52,7 @@ class load_data:
         self.shuffle = shuffle
         self.do_random_crop = do_random_crop
         self.device = device
-        
+        self.reduce = reduce
         #GPU CHECK
         train_on_gpu = torch.cuda.is_available()
         if not train_on_gpu:
@@ -65,12 +65,14 @@ class load_data:
                                         transforms.RandomRotation((-360, 360)),
                                         transforms.RandomHorizontalFlip(),
                                         transforms.RandomVerticalFlip(),
-                                        transforms.ToTensor()
+                                        transforms.ToTensor(),
+                                        transforms.Normalize(mean=[0.485, 0.456, 0.406],std=[0.229, 0.224, 0.225]),
                                         ])
 
         # validation transformations
         self.valid_trans = transforms.Compose([transforms.ToPILImage(),
                                         transforms.ToTensor(),
+                                        transforms.Normalize(mean=[0.485, 0.456, 0.406],std=[0.229, 0.224, 0.225]),
                                         ])
 
         # test transformations
@@ -92,19 +94,21 @@ class load_data:
                                 directory  = self.train_image_path,
                                 transform  = self.train_trans,
                                 columns = self.columns,
-                                itype = self.itype)
+                                itype = self.itype,
+                                reduce = self.reduce)
 
         train_loader = torch.utils.data.DataLoader(dataset     = train_dataset, 
                                                     batch_size  = self.batch_size, 
                                                     shuffle     = self.shuffle, 
                                                     num_workers = 4)
         
-        test_dataset = EyeData(data = self.test_df.iloc[:, 0:2], 
+        test_dataset = EyeData(data = self.test_df.iloc[:100, 0:2], 
                             directory  = self.test_image_path,
                             transform  = self.test_trans,
                             columns = self.columns,
                             itype = self.itype,
-                            do_random_crop = False)
+                            do_random_crop = False,
+                            reduce = self.reduce)
 
         test_loader = torch.utils.data.DataLoader(dataset     = test_dataset, 
                                                     batch_size  = int(self.batch_size/4), 
@@ -116,7 +120,8 @@ class load_data:
                             transform  = self.valid_trans,
                             columns = self.columns,
                             itype = self.itype,
-                            do_random_crop = False)
+                            do_random_crop = False,
+                            reduce = self.reduce)
 
         valid_loader = torch.utils.data.DataLoader(dataset     = valid_dataset, 
                                                     batch_size  = int(self.batch_size/4), 
