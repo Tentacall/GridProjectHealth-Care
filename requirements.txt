@@ -159,7 +159,6 @@ pytz==2023.3
 PyYAML==6.0.1
 pyzmq==25.1.1
 qcs-api-client==0.21.6
-qiskit==0.44.1
 qiskit-aer==0.12.2
 qiskit-aer-gpu-cu11==0.12.2
 qiskit-terra==0.25.1
@@ -194,9 +193,7 @@ stack-data==0.6.2
 stevedore==5.1.0
 symengine==0.9.2
 sympy==1.12
-tensorboard==2.13.0
 tensorboard-data-server==0.7.1
-tensorflow==2.13.0
 tensorflow-estimator==2.13.0
 tensorflow-io-gcs-filesystem==0.33.0
 termcolor==2.3.0

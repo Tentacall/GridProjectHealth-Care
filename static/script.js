@@ -9,7 +9,6 @@ uploadForm.addEventListener('change', (event) => {
         uploadedImage.src = imageUrl;
     }
 });
-const random_result = [3,1,0,0,2,0,0,4];
 var i = 0;
 
 uploadForm.addEventListener('submit', async (event) => {
@@ -26,7 +25,7 @@ uploadForm.addEventListener('submit', async (event) => {
         if (response.ok) {
             const result = await response.json();
             // Process the result if needed
-            resultSection.textContent = `Ratinopathy Level: ${result.size + random_result[i]} `;
+            resultSection.textContent = `Ratinopathy Level: ${result.size} `;
             i += 1;
         } else {
             console.error('Image upload failed:', response.statusText);

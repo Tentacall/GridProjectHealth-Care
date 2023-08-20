@@ -20,7 +20,7 @@ class Quanv2D(nn.Module):
         self.out_channels = out_channels
         self.kernel_size = kernel_size
         self.stride = stride
-        self.kernel = kernel3
+        self.kernel = kernel4
         self.precision = precision
         self.extension_factor = self.out_channels // self.in_channels
         self.weight = nn.Parameter(
