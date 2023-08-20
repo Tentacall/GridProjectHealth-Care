@@ -8,7 +8,7 @@
 - [QDCNN](#qdcnn)
 - [Experimental Results](#experimental_result)
 - [How to run ?](#how_to_run) 
-- Conclusion
+- [Conclusion](#conclusion)
 
 <a name="problem_statement"></a>
 ### Abstract
@@ -162,3 +162,14 @@ config:
 - There models can be extreemly slow during training, so to check whats going on set `quite: False`
 
 - To run the web server run `flask run`, this takes a already trained file and corrosponding model.
+
+<a name="conclusion"></a>
+### Conclusion
+
+Our project on Diabetic Retinopathy detection using a **QDCNN has provided valuable insights** of technologies for medical image analysis. Through rigorous experimentation with various models, we have demonstrated the complexity and challenges inherent in diagnosing DR accurately.
+
+QCNN indeed has showed promise, but, it is evident that the current state of this technology and available resources is not yet practical for real-life applications. The **computational requirements and infrastructure constraints associated with quantum computing are significant hurdles** that need to be overcome before its integration into the medical field becomes feasible.
+
+It is apparent that alternative approaches in DL hold the key to bridging the gap between technological innovation and practical applicability. Exploring different types of **DL architectures, such as transfer learning, RNNs, and attention mechanisms, could offer more viable solutions for diabetic retinopathy detection**.
+
+Moving forward, it is crucial to continue investing in research and development to refine and optimize the fusion of the proposed solution the medical domain. **Collaborations between experts in quantum computing, DL, and medical experts are essential** for the integration process, making accurate and efficient DR detection a reality in the near future.
