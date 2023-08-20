@@ -1,6 +1,4 @@
-from utils.dataloader  import load_data
 import time
-from utils.confLoader import *
 import torch.nn as nn
 import torch.optim as optim
 import torch
@@ -9,6 +7,9 @@ import torch.multiprocessing as mp
 import numpy as np
 import matplotlib.pyplot as plt
 from sklearn.metrics import confusion_matrix, classification_report
+import yaml
+import argparse
+import sys
 # model imports
 from models.model_v1 import ClassicalModel
 from models.model_v1 import QuantamModel
@@ -16,15 +17,19 @@ from models.model_v2 import RetinopathyClassification
 from models.Q_model import QClassifier
 from models.Q_model_simple import SimpleQClassifier
 from models.Classic_model_simple import SimpleClassifier
+from utils.confLoader import *
+from utils.dataloader  import load_data
+
 
 if torch.cuda.is_available():
     device = torch.device("cuda")
 else:
     device = torch.device("cpu")
+print("Using Device: ", device)
 
 
 class Trainner:
-    def __init__(self, model, epoch = 1, reduced = False):
+    def __init__(self, model, epoch = 1, reduced = False, quite = True):
         loader = load_data(train_labels_path, test_labels_path, train_image_path, test_image_path, columns, itype = '.jpg', batch_size = 16, shuffle=True, do_random_crop = False, device = 'cpu', reduce = reduced)
         self.train_loader, self.test_loader, self.valid_loader = loader.create_loader()
         self.model = model.to(device)
@@ -32,6 +37,7 @@ class Trainner:
         self.optimizer = optim.SGD(model.parameters(), lr=0.001, momentum = 0.9, weight_decay = 0.0001)
         self.total_loss = 0.0
         self.epoch = epoch
+        self.quite = quite
 
     @staticmethod
     def loading_bar( current_value, total_value, bar_length=40):
@@ -40,7 +46,7 @@ class Trainner:
         spaces = ' ' * (bar_length - len(arrow))
         print(f'\r[{arrow}{spaces}] {int(progress * 100)}%', end='', flush=True)
 
-    def train(self):
+    def train(self, save_checkpoint, filename):
         for epoch in range(self.epoch):
             running_loss = 0.0
             for i, data in enumerate(self.train_loader):
@@ -55,9 +61,11 @@ class Trainner:
                 self.optimizer.step()
                 running_loss += loss.item()
                 delta = time.time() - start_time
-                print(f"{i+1}th batch in {delta:0.6f} sec, with loss = {loss}")
-                self.save(f"model_quantam_v3.1.{i}")
-                # self.loading_bar(i, 24)
+                if save_checkpoint:   
+                    self.save(f"{filename}.{i}")
+                if not self.quite:
+                    self.loading_bar(i, 24)
+                    print(f"{i+1}th batch in {delta:0.6f} sec, with loss = {loss}")
             print(f"Epoch {epoch+1}, Loss: {running_loss / len(self.train_loader)}")
         print("Total Loss : ", self.total_loss)
 
@@ -76,13 +84,11 @@ class Trainner:
                 output = self.model(inputs)
                 _, predicted = torch.max(output.data, 1)
                 total += labels.size(0)
-                print(predicted, labels)
                 correct += (predicted == labels).sum().item()
-                # y_pred.append(predicted)
-                # y_true.append(labels)
                 y_pred[count], y_true[count] = predicted, labels
-                # print(y_true[count])
                 count += 1
+                if not self.quite:
+                    print(predicted, labels)
                 print(f"total: {total}, correct = {correct}")
         print(f'Accuracy of the network on the {total} test images: {100 * correct / total:.2f}%')
         print(y_pred, y_true)
@@ -90,7 +96,6 @@ class Trainner:
 
     def conf_mat(self, num_of_classes=5):
         y_pred, y_true = self.test()
-        print("flag")
         # Flatten the tensors
         y_pred_flat = y_pred.flatten()
         y_true_flat = y_true.flatten()
@@ -138,13 +143,58 @@ class Trainner:
 
 
 if __name__ == '__main__':
+    # adding command line arg parser
+    parser = argparse.ArgumentParser(description="DR Classification models, training, testing utility")
+    parser.add_argument("--config", type=str, default='config/simple_quantam.yaml', help="Configuration file path")
+    args = parser.parse_args()
+    
+    models = [ "QuantamModel", "QClassifier", "SimpleQClassifier" ]
+    conf = yaml.safe_load(open(args.config, 'r'))
+    
+    model_name = conf['config']['model']
+    reduced = bool(conf['config']['reduced'])
+    epoch = int(conf['config']['epoch'])
+    preload = bool(conf['config']['preload'])
+    preload_path = str(conf['config']['preload'])
+    train = bool(conf['config']['train'])
+    test = bool(conf['config']['test'])
+    save = bool(conf['config']['save'])
+    save_path = str(conf['config']['save_path'])
+    confusion = bool(conf['config']['confusion_matrix'])
+    save_check_point = bool(conf['config']['save_checkpoint'])
+    quite = bool(conf['config']['quite'])
+    
+    if model_name not in models:
+        print("Wrong model name. Try these :")
+        print(model_name)
+        sys.exit(0)
+    
+    if model_name == "QuantamModel":
+        model = QuantamModel(device)
+        trainer = Trainner(model, epoch, False , quite)
+        
+    elif model_name == "QClassifier":
+        model = QClassifier(device)
+        trainer = Trainner(model, epoch, False , quite)
+        
+    elif model_name == "SimpleQClassifier":
+        model = SimpleQClassifier(device)
+        trainer = Trainner(model, epoch, True , quite)
+    
     mp.set_start_method('spawn')
-    model = SimpleQClassifier()
-    # model = QClassifier()
     print(model)
-    trainer = Trainner(model, 1, True)
-    # trainer.loadModel("model_quantam_v3.0.19")
-    trainer.train()
-    trainer.save("model_quantam_v3.1")
-    # trainer.test()
-    trainer.conf_mat()
+    
+    if preload:
+        trainer.loadModel(preload_path)
+    
+    if train:
+        trainer.train(save_check_point, save_path)
+        
+    if save:
+        trainer.save(save_path)
+    
+    if test:
+        trainer.test()
+        
+    if confusion:
+        trainer.conf_mat()

@@ -1,0 +1,13 @@
+config:
+  model : "SimpleQClassifier"
+  train : True
+  test: True
+  preload: False
+  preloaded_path: None
+  save : True
+  save_path: "model_quantam_v3.3"
+  confusion_matrix: False
+  reduced : True
+  epoch : 1000
+  save_checkpoint: False
+  quite: False
