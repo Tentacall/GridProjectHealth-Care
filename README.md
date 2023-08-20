@@ -2,16 +2,17 @@
 ## Diabetic Retinotherapy using Quantum Computing
 
 ### Content
-- [Problem Statement](###Abstract)
-- [Proposed Methodology](###Proposed-Methodology)
-- [Quantum Circuit](###Quantum-Circuit)
-- [QDCNN](###QDCNN)
-- [Experimental Results](###Results)
-- [How to run ?](##How-to-run-?) 
+- [Problem Statement](#problem_statement)
+- [Proposed Methodology](#proposed-methodology)
+- [Quantum Circuits](#quantum-circuit)
+- [QDCNN](#qdcnn)
+- [Experimental Results](#experimental_result)
+- [How to run ?](#how_to_run) 
 - Conclusion
 
+<a name="problem_statement"></a>
 ### Abstract
-India is known as diabetic capital and in next 20-30 years number of case will double.
+India is known as diabteic capital and in next 20-30 years number of case will double.
 Diabetic retinopathy is one of the outcomes of diabetic and may lead to blindness and
 significantly reduce productive life of a person. It seems to be caused by micro-vascular retianal
 changes. Vision based screening and classification algorithms could aid the early detection of the
@@ -31,11 +32,13 @@ the distinct additional qubit. The overall performance of this system is validat
 with performance metrics, and the proposed method achieves 100% accuracy, 100% precision,
 100% recall, 100% specificity, and 100% f1-score
 
+<a name="proposed_methodology"></a>
 ## Proposed Methodology
 We suggest quantum Kernel based deep convolutional neural network based solution. So we looked into the fundamentals of 
 convolutional layer, and we made our own implementation  ( can be found in `models/Quanv2D` )
 This layer almost works like a regular conv2D layer but it is pretty slow and depends on how the quantam circuit is implemented.
 
+<a name="quantum_circuit"></a>
 ### Quantum circuit
 So we tried and desined different type of kernel and our main goal was to make something tha would somehow work like the classical one, means a 2x2 kernel with 2x2 weights, and the final output is effected by all of them.
 Here are our previous tries -
@@ -79,6 +82,7 @@ Here are our previous tries -
 0 ⊕ Ry(p1)Rx(w1) ⊕ Ry(p2)Rx(w1+w2) ⊕ Ry(p3)Rx(w1+w2+w3) ⊕ Ry(p4)Rx(w1+w2+w3+w4)
 ```
 
+<a name="qdcnn"></a>
 ### QDCNN
 - we tried several architecture but due to various restriction ( quantam simulation, small dataset ) we had to compromise.
 - So we have comeup with 2 model 
@@ -115,6 +119,7 @@ SimpleQClassifier(
 - All the slowness is for the simulations
 - We can check the full capabilities if we could run it on actuall hardware
 
+<a name="experimental_result"></a>
 ### Results
 We trained the the SimpleQClassifier model on the IDRID dataset for 5 epoch and there are the confusion matrix
 
