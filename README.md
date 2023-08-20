@@ -2,14 +2,16 @@
 ## Diabetic Retinotherapy using Quantum Computing
 
 ### Content
-- Problem Statement
-- Proposed Methodology
-- Experimental Results
-- [How to run ?](#how_to_run) 
+- [Problem Statement](###Abstract)
+- [Proposed Methodology](###Proposed-Methodology)
+- [Quantum Circuit](###Quantum-Circuit)
+- [QDCNN](###QDCNN)
+- [Experimental Results](###Results)
+- [How to run ?](##How-to-run-?) 
 - Conclusion
 
-### Abstruct
-India is known as diabteic capital and in next 20-30 years number of case will double.
+### Abstract
+India is known as diabetic capital and in next 20-30 years number of case will double.
 Diabetic retinopathy is one of the outcomes of diabetic and may lead to blindness and
 significantly reduce productive life of a person. It seems to be caused by micro-vascular retianal
 changes. Vision based screening and classification algorithms could aid the early detection of the
